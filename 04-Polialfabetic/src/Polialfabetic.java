@@ -1,15 +1,10 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 public class Polialfabetic {
-    private static final List<Character> alfabetMayusc = List.of('A', 'Á', 'À', 'B', 'C', 'Ç', 'D', 'E', 'É', 'È', 'F',
-            'G', 'H', 'I', 'Í', 'Ì', 'Ï', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'Ó', 'Ò', 'P', 'Q', 'R', 'S', 'T', 'U',
-            'Ú', 'Ù', 'Ü', 'V', 'W', 'X', 'Y', 'Z');
+        private static final char[] alfabetMayusc = "AÁÀBCÇDEÉÈFGHIÍÌÏJKLMNÑOÓÒPQRSTUÚÙÜVWXYZ".toCharArray(); 
     private static final long clauSecreta = 922337;
     private static Random numXifra;
-    private static List<Character> alfabeRandom;
+    private static char[] alfabeRandom;
 
     public static void main(String[] args) {
         String msgs[] = {
@@ -38,8 +33,13 @@ public class Polialfabetic {
     }
 
     public static void permutaAlfabet() {
-        alfabeRandom = new ArrayList<>(alfabetMayusc);
-        Collections.shuffle(alfabeRandom, numXifra);
+        alfabeRandom = alfabetMayusc.clone();
+        for (int i = alfabeRandom.length - 1; i > 0; i--) {
+            int j = numXifra.nextInt(i + 1);
+            char temp = alfabeRandom[i];
+            alfabeRandom[i] = alfabeRandom[j];
+            alfabeRandom[j] = temp;
+        }
     };
 
     public static String xifraPoliAlfa(String msg) {
@@ -49,27 +49,40 @@ public class Polialfabetic {
     public static String desxifraPoliAlfa(String msgXifrat) {
         return procedimient(msgXifrat,false );
     };
+    public static int indexOf(char[] array, char letra){
+        for(int i= 0; i < array.length; i++){
+            if(array[i] == letra){
+                return i;
+            }
+        }
+        return -1;
+    }
 
     private static String procedimient(String cadena, boolean xifrar) {
-        String result = "";
-        int posicio;
-        char caracter;
-        for (int i = 0; i < cadena.length(); i++) {
-           char letra  = cadena.charAt(i);
-           if(Character.isLetter(letra) == false ){result+=letra; continue;}
-           permutaAlfabet();
-           boolean esMinuscula = Character.isLowerCase(letra);
-           char letraMayusc = Character.toUpperCase(letra);
-           if(xifrar){
-                posicio = alfabetMayusc.indexOf(letraMayusc);
-                caracter = alfabeRandom.get(posicio);
-                result += esMinuscula ? Character.toLowerCase(caracter): caracter;
-           } else {
-                posicio = alfabeRandom.indexOf(letraMayusc);
-                caracter = alfabetMayusc.get(posicio);
-                result += esMinuscula ? Character.toLowerCase(caracter) : caracter;
-           } 
+        char[] caracters = cadena.toCharArray();
+        char[] resultat = new char[caracters.length];
+        for(int i = 0; i < caracters.length; i++){
+            char letra = caracters[i];
+            char letraMayusc = Character.toUpperCase(letra);
+            int pos = indexOf(alfabetMayusc, letraMayusc);
+            if (pos == -1) {
+                resultat[i] = letra;
+                continue;
+            }
+            permutaAlfabet();
+
+            boolean esMinuscula = Character.isLowerCase(letra);
+            char caracterSubstituit;
+
+            if (xifrar) {
+                caracterSubstituit = alfabeRandom[pos];
+            } else {
+                int posPermutada = indexOf(alfabeRandom, letraMayusc);
+                caracterSubstituit = alfabetMayusc[posPermutada];
+            }
+
+            resultat[i] = esMinuscula ? Character.toLowerCase(caracterSubstituit) : caracterSubstituit;           
         }
-        return result;
+        return new String(resultat);
     }
 }
