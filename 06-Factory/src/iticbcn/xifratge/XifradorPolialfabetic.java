@@ -6,6 +6,29 @@ public class XifradorPolialfabetic implements Xifrador{
     private static final long clauSecreta = 922337;
     private Random numXifra;
     private char[] alfabeRandom;
+    @Override 
+    public TextXifrat xifra(String msg, String clau) throws ClauNoSuportada{
+        long clauLong;
+        try {
+            clauLong = Long.parseLong(clau);
+        } catch (NumberFormatException e) {
+            throw new ClauNoSuportada("La clau per xifrat Polialfabètic ha de ser un String convertible a long");
+        }
+        initRandom(clauLong);
+        return new TextXifrat(xifraPoliAlfa(msg).getBytes());
+    }
+    @Override
+    public String desxifra(TextXifrat xifrat, String clau) throws ClauNoSuportada {
+        long clauLong;
+        try {
+            clauLong = Long.parseLong(clau);
+        } catch (NumberFormatException e) {
+            throw new ClauNoSuportada("La clau de Polialfabètic ha de ser un String convertible a long");
+        }
+        if (xifrat == null) return null;
+        initRandom(clauLong);
+        return desxifraPoliAlfa(xifrat.toString());
+    }
 
     public void main(String[] args) {
         String msgs[] = {

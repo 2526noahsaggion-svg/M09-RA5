@@ -6,6 +6,28 @@ import java.util.List;
 public class XifradorMonoalfabetic implements Xifrador{
     private static final char[] alfabetMayusc = "AÁÀBCÇDEÉÈFGHIÍÌÏJKLMNÑOÓÒPQRSTUÚÙÜVWXYZ".toCharArray();
     private  char[] alfabetRamdo = permutaAlfabet(alfabetMayusc);
+    
+    public XifradorMonoalfabetic() {
+        this.alfabetRamdo = permutaAlfabet(alfabetMayusc);
+    }
+
+    @Override
+    public TextXifrat xifra(String msg, String clau) throws ClauNoSuportada {
+        if (clau != null) {
+            throw new ClauNoSuportada("Xifratxe monoalfabètic no suporta clau != null");
+        }
+        return new TextXifrat(xifraMonoAlfa(msg).getBytes());
+    }
+
+    @Override
+    public String desxifra(TextXifrat xifrat, String clau) throws ClauNoSuportada {
+        if (clau != null) {
+            throw new ClauNoSuportada("Xifratxe monoalfabètic no suporta clau != null");
+        }
+        if (xifrat == null) return null;
+        return desxifraMonoAlfa(xifrat.toString());
+    }
+    
     public char[] permutaAlfabet(char[] alfabet) {
         List<Character> llista = new ArrayList<>();
         for (char c : alfabet) {

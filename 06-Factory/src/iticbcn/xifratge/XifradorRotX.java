@@ -1,4 +1,5 @@
 package iticbcn.xifratge;
+
 public class XifradorRotX implements Xifrador{
     
     private int longitudAbecadari = 39;
@@ -7,6 +8,33 @@ public class XifradorRotX implements Xifrador{
     'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'ó', 'ò', 'p', 'q', 'r', 's', 't', 'u', 'ú', 'ù',
     'ü', 'v', 'w', 'x', 'y', 'z'
     };
+    @Override
+    public TextXifrat xifra(String msg, String clau) throws ClauNoSuportada {
+        int desplaçament;
+        try {
+            desplaçament = Integer.parseInt(clau);
+            if (desplaçament < 0 || desplaçament > 40) {
+                throw new ClauNoSuportada("Clau de RotX ha de ser un sencer de 0 a 40");
+            }
+        } catch (NumberFormatException e) {
+            throw new ClauNoSuportada("Clau de RotX ha de ser un sencer de 0 a 40");
+        }
+        return new TextXifrat(xifraRotX(msg, desplaçament).getBytes());
+    }
+    @Override
+    public String desxifra(TextXifrat xifrat, String clau) throws ClauNoSuportada {
+        int desplaçament;
+        try {
+            desplaçament = Integer.parseInt(clau);
+            if (desplaçament < 0 || desplaçament > 40) {
+                throw new ClauNoSuportada("Clau de RotX ha de ser un sencer de 0 a 40");
+            }
+        } catch (NumberFormatException e) {
+            throw new ClauNoSuportada("Clau de RotX ha de ser un sencer de 0 a 40");
+        }
+        if (xifrat == null) return null;
+        return desxifraRotX(xifrat.toString(), desplaçament);
+    }
     
     public  char[] majuscules = {
         'A', 'Á', 'À', 'B', 'C', 'Ç', 'D', 'E', 'É', 'È', 'F', 'G', 'H', 'I', 'Í', 'Ì', 'Ï',

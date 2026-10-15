@@ -2,7 +2,7 @@ package iticbcn.xifratge;
 
 public class AlgorismePolialfabetic extends  AlgorismeFactory{
     @Override 
-    public Xifrador creXifrador(){
+    public Xifrador creaXifrador(){
         return new XifradorPolialfabetic();
     }
 }

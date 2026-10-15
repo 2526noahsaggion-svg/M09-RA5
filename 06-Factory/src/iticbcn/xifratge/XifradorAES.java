@@ -15,6 +15,28 @@ public class XifradorAES implements Xifrador{
     private  byte[] iv = new byte[MIDA_IV];
     private static final String CLAU = "LaClauSecretaQueVulguis";
 
+    @Override
+    public TextXifrat xifra(String msg, String clau) throws ClauNoSuportada {
+        try {
+            return new TextXifrat(xifraAES(msg, clau));
+        } catch (Exception e) {
+            System.err.println("Error de xifrat: " + e.getLocalizedMessage());
+            System.exit(1);
+            return null;
+        }
+    }
+    @Override
+    public String desxifra(TextXifrat xifrat, String clau) throws ClauNoSuportada {
+        try {
+            return desxifraAES(xifrat.getBytes(), clau);
+        } catch (Exception e) {
+            System.err.println("Error de desxifrat: " + e.getLocalizedMessage());
+            System.exit(1);
+            return null;
+        }
+    }
+
+
     public  byte[] xifraAES(String msg, String clau) throws Exception{
         // Obtener los bits del String
         byte[] msgBytes = msg.getBytes(StandardCharsets.UTF_8);
