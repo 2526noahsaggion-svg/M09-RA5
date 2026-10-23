@@ -17,7 +17,7 @@ public class Main {
         System.out.println("======================================");
         System.out.println("Text desxifrat: " + msgDesxifrat);
         String strClauPub = DatatypeConverter.printHexBinary(parellClaus.getPublic().getEncoded());
-        String strClauPriv = DatatypeConverter.printHexBinary(parellClaus.getPublic().getEncoded());
+        String strClauPriv = DatatypeConverter.printHexBinary(parellClaus.getPrivate().getEncoded());
         System.out.println("======================================");
         System.out.println("Clau pública: " + strClauPub);
         System.out.println("======================================");
